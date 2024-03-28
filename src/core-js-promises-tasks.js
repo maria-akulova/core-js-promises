@@ -65,7 +65,11 @@ function getPromiseResult(source) {
  * [Promise.reject(1), Promise.reject(2), Promise.reject(3)]    => Promise rejected
  */
 function getFirstResolvedPromiseResult(promises) {
-  return Promise.race(promises).then((winner) => winner);
+  return new Promise((resolve) => {
+    promises.forEach((promise) => {
+      promise.then(resolve).catch(() => {});
+    });
+  });
 }
 
 /**
